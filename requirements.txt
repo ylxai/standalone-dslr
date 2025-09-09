@@ -1,0 +1,26 @@
+# 📸 HafiPortrait DSLR Auto-Upload System
+# Python dependencies
+
+# Core camera and image processing
+gphoto2==2.3.4              # Python binding for gphoto2 (camera control)
+Pillow==10.1.0               # Image processing (PIL)
+rawpy==0.18.1                # RAW image processing (NEF files)
+numpy==1.24.3                # Array processing for images
+
+# File monitoring and system
+watchdog==3.0.0              # File system monitoring
+requests==2.31.0             # HTTP requests for API calls
+pathlib2==2.3.7              # Enhanced path handling
+
+# Optional: Advanced image processing
+opencv-python==4.8.1.78     # Advanced image processing (optional)
+colour-science==0.4.2        # LUT processing (optional)
+
+# Development and debugging
+python-dotenv==1.0.0         # Environment variables
+colorama==0.4.6              # Colored terminal output
+
+# Platform-specific notes:
+# - Linux: Requires libgphoto2-dev
+# - macOS: Install gphoto2 via Homebrew first
+# - Windows: Manual gphoto2 installation required

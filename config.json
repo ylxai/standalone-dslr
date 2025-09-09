@@ -1,0 +1,51 @@
+{
+    "camera": {
+        "model": "Nikon D7100",
+        "watch_directory": "/path/to/camera/folder",
+        "file_extensions": [".NEF", ".JPG", ".JPEG"],
+        "auto_detect": true,
+        "polling_interval": 2
+    },
+    "web_project": {
+        "base_url": "http://localhost:3002",
+        "upload_endpoint": "/api/dslr/upload",
+        "status_endpoint": "/api/dslr/status",
+        "timeout": 30
+    },
+    "processing": {
+        "temp_directory": "./temp/",
+        "backup_originals": true,
+        "default_preset": "wedding_warm",
+        "auto_watermark": true,
+        "quality": 95
+    },
+    "watermark": {
+        "file": "./watermark.png",
+        "position": "bottom_center",
+        "size_percentage": 15,
+        "margin_bottom": 10,
+        "opacity": 100
+    },
+    "presets": {
+        "directory": "./presets/",
+        "default": "wedding_warm",
+        "available": [
+            "wedding_warm",
+            "wedding_classic",
+            "portrait_soft",
+            "event_vibrant"
+        ]
+    },
+    "monitoring": {
+        "check_interval": 5,
+        "max_retries": 3,
+        "retry_delay": 10,
+        "log_level": "INFO"
+    },
+    "advanced": {
+        "parallel_processing": false,
+        "max_file_size_mb": 50,
+        "supported_formats": ["NEF", "JPG", "JPEG"],
+        "auto_orientation": true
+    }
+}
