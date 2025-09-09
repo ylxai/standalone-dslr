@@ -17,7 +17,7 @@ try:
 except ImportError:
     COLORS_AVAILABLE = False
 
-from uploader import HafiPortraitUploader
+from uploader_robust import RobustHafiPortraitUploader as HafiPortraitUploader
 from preset_processor import PresetProcessor
 from watermark_manager import WatermarkManager
 

@@ -19,7 +19,7 @@ try:
     from camera import CameraDetector, DSLRMonitor
     from preset_processor import PresetProcessor, AdobePresetParser
     from watermark_manager import WatermarkManager
-    from uploader import HafiPortraitUploader
+    from uploader_robust import RobustHafiPortraitUploader as HafiPortraitUploader
 except ImportError as e:
     print(f"❌ Error importing modules: {e}")
     sys.exit(1)

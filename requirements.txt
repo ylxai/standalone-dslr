@@ -20,6 +20,13 @@ colour-science==0.4.2        # LUT processing (optional)
 python-dotenv==1.0.0         # Environment variables
 colorama==0.4.6              # Colored terminal output
 
+# Database and storage integration
+supabase==2.0.0              # Supabase Python client
+boto3==1.34.0                # AWS S3/Cloudflare R2 client
+google-api-python-client==2.0.0  # Google Drive API
+google-auth-httplib2==0.2.0  # Google Auth HTTP
+google-auth-oauthlib==1.0.0  # Google OAuth
+
 # Platform-specific notes:
 # - Linux: Requires libgphoto2-dev
 # - macOS: Install gphoto2 via Homebrew first

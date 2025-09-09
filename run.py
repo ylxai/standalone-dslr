@@ -20,7 +20,7 @@ try:
     from camera import DSLRMonitor
     from preset_processor import PresetProcessor
     from watermark_manager import WatermarkManager
-    from uploader import HafiPortraitUploader
+    from uploader_robust import RobustHafiPortraitUploader as HafiPortraitUploader
     from interactive_selector import InteractiveSelector
 except ImportError as e:
     print(f"❌ Error importing modules: {e}")
