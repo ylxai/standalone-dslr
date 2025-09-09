@@ -1,0 +1,31 @@
+# 📸 HafiPortrait DSLR Auto-Upload System
+# Python 3.12 Compatible Dependencies
+
+# Core image processing (Python 3.12 compatible)
+Pillow>=10.2.0               # Image processing (PIL) - Latest stable
+numpy>=1.26.0                # Array processing - Python 3.12 compatible
+requests>=2.31.0             # HTTP requests for API calls
+
+# File monitoring and system
+watchdog>=4.0.0              # File system monitoring - Updated
+python-dotenv>=1.0.0         # Environment variables
+colorama>=0.4.6              # Colored terminal output
+
+# Database and storage integration (Fixed versions)
+supabase>=2.3.0              # Supabase Python client - Updated
+boto3>=1.34.0                # AWS S3/Cloudflare R2 client
+google-api-python-client>=2.100.0  # Google Drive API - Updated
+google-auth-httplib2>=0.2.0  # Google Auth HTTP
+google-auth-oauthlib>=1.2.0  # Google OAuth - Updated
+
+# Optional: Camera integration (install separately if needed)
+# gphoto2>=2.5.0             # Uncomment if camera hardware available
+# rawpy>=0.19.0              # Uncomment for RAW processing
+
+# Optional: Advanced image processing (install separately if needed)  
+# opencv-python>=4.9.0       # Uncomment for advanced processing
+
+# Platform-specific installation notes:
+# 1. For camera support: sudo apt install libgphoto2-dev (Linux)
+# 2. For RAW processing: pip install rawpy (after numpy)
+# 3. For OpenCV: pip install opencv-python (optional)

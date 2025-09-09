@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-🔗 Fixed Upload Client
-Real database integration dengan proper multipart handling
+🔗 Robust Upload Client
+Real database integration dengan HafiPortrait web project
+Uses REAL API endpoints and Supabase database
 """
 
 import os
@@ -22,13 +23,13 @@ except ImportError:
 
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    load_dotenv()  # Load environment variables
 except ImportError:
     pass
 
 
 class RobustHafiPortraitUploader:
-    """Fixed upload client dengan proper multipart handling"""
+    """Robust upload client dengan real database integration"""
     
     def __init__(self, config: Dict = None):
         # Load environment variables
@@ -38,11 +39,11 @@ class RobustHafiPortraitUploader:
         # Setup logging
         self.logger = logging.getLogger(__name__)
         
-        # Session untuk connection reuse - NO CONTENT-TYPE HEADER
+        # Session untuk connection reuse
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'HafiPortrait-DSLR-Client/2.0'
-            # NO Content-Type header - let requests handle it
+            'User-Agent': 'HafiPortrait-DSLR-Client/2.0',
+            # 'Content-Type': 'application/json'  # Removed for multipart compatibility
         })
         
         # Current event context
@@ -104,6 +105,7 @@ class RobustHafiPortraitUploader:
                         watermark_enabled: bool = True) -> bool:
         """Set active event menggunakan real API"""
         try:
+            # Use environment default if not specified
             if preset_name is None:
                 preset_name = os.getenv('DSLR_DEFAULT_PRESET', 'wedding_warm')
             
@@ -116,8 +118,9 @@ class RobustHafiPortraitUploader:
                 'watermarkEnabled': watermark_enabled
             }
             
-            # Use proper headers for JSON
-            headers = {'Content-Type': 'application/json'}
+            # Remove Content-Type header for this request
+            headers = {k: v for k, v in self.session.headers.items() if k.lower() != 'content-type'}
+            
             response = self.session.post(url, json=data, timeout=self.timeout, headers=headers)
             
             if response.status_code == 200:
@@ -145,9 +148,9 @@ class RobustHafiPortraitUploader:
             self.logger.error(f"❌ Error setting active event: {e}")
             return False
     
-    def upload_photo(self, image_data: object, original_file_path: str, 
+    def upload_photo(self, image_data: np.ndarray, original_file_path: str, 
                     metadata: Dict = None) -> Dict[str, Any]:
-        """Upload processed photo dengan proper multipart handling"""
+        """Upload processed photo menggunakan real API endpoint"""
         
         if not self.current_event:
             self.logger.error("❌ No active event set")
@@ -180,11 +183,20 @@ class RobustHafiPortraitUploader:
             # Add metadata if provided
             if metadata:
                 for key, value in metadata.items():
-                    if key not in data:
+                    if key not in data:  # Don't override required fields
                         data[key] = str(value)
             
-            # Upload with clean session (no Content-Type header)
-            response = self.session.post(url, files=files, data=data, timeout=60)
+            # Remove Content-Type header for multipart upload
+            headers = {k: v for k, v in self.session.headers.items() if k.lower() != 'content-type'}
+            
+            # Upload
+            response = self.session.post(
+                url, 
+                files=files, 
+                data=data, 
+                timeout=60,  # Longer timeout for upload
+                headers=headers
+            )
             
             if response.status_code in [200, 201]:
                 result = response.json()
@@ -221,7 +233,7 @@ class RobustHafiPortraitUploader:
                 'error': error_msg
             }
     
-    def _convert_to_jpeg_bytes(self, image_data: object) -> bytes:
+    def _convert_to_jpeg_bytes(self, image_data: np.ndarray) -> bytes:
         """Convert numpy array to JPEG bytes"""
         
         if not PIL_AVAILABLE:
@@ -268,7 +280,7 @@ class RobustHafiPortraitUploader:
                 'error': f"Status check error: {e}"
             }
     
-    def retry_upload(self, image_data: object, original_file_path: str, 
+    def retry_upload(self, image_data: np.ndarray, original_file_path: str, 
                     max_retries: int = None, retry_delay: int = None) -> Dict[str, Any]:
         """Upload dengan retry mechanism"""
         
@@ -311,9 +323,9 @@ class RobustHafiPortraitUploader:
 
 
 # Test functions
-def test_fixed_uploader():
-    """Test fixed uploader functionality"""
-    print("🔗 Testing Fixed Upload Client...")
+def test_robust_uploader():
+    """Test robust uploader functionality"""
+    print("🔗 Testing Robust Upload Client...")
     
     uploader = RobustHafiPortraitUploader()
     
@@ -329,21 +341,41 @@ def test_fixed_uploader():
     print("\n2. Testing events retrieval...")
     events = uploader.get_all_events()
     if events:
-        print(f"✅ Retrieved {len(events)} events")
-        for event in events[:3]:
+        print(f"✅ Retrieved {len(events)} events:")
+        for event in events[:3]:  # Show first 3
             print(f"   - {event.get('name', 'Unknown')} (ID: {event.get('id')})")
     else:
         print("❌ No events retrieved")
         return
     
+    # Test setting active event
+    if events:
+        print("\n3. Testing set active event...")
+        test_event = events[0]
+        if uploader.set_active_event(test_event['id']):
+            print(f"✅ Active event set: {test_event.get('name')}")
+        else:
+            print("❌ Failed to set active event")
+    
+    # Test DSLR status
+    print("\n4. Testing DSLR status...")
+    status = uploader.get_dslr_status()
+    if status.get('success'):
+        print("✅ DSLR status retrieved")
+        print(f"   Status: {status.get('status', {})}")
+    else:
+        print(f"❌ DSLR status failed: {status.get('error')}")
+    
     uploader.close()
-    print("\n🎉 Fixed uploader test completed!")
+    print("\n🎉 Robust uploader test completed!")
 
 
 if __name__ == "__main__":
+    # Setup logging
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     
-    test_fixed_uploader()
+    # Run test
+    test_robust_uploader()

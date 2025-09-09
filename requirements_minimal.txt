@@ -1,0 +1,17 @@
+# 📸 HafiPortrait DSLR - Minimal Requirements
+# Python 3.12 Compatible - Virtual Environment
+
+# Essential packages only
+requests>=2.31.0             # HTTP requests for API calls
+python-dotenv>=1.0.0         # Environment variables
+Pillow>=10.2.0               # Image processing (PIL)
+numpy>=1.26.0                # Array processing
+
+# Database integration (essential)
+supabase>=2.3.0              # Supabase Python client
+
+# Optional packages (install separately if needed):
+# boto3>=1.34.0              # For Cloudflare R2 storage
+# watchdog>=4.0.0            # For file monitoring
+# colorama>=0.4.6            # For colored output
+# google-api-python-client   # For Google Drive integration
